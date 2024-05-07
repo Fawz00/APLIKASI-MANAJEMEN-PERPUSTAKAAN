@@ -47,9 +47,8 @@
     // ADD ACCOUNT        USER ID       NAME                        ADMIN
     accounts.push_back( {"2304130169", "FAWWAZ HARYOLUKITO PAMBUDI", true} );
     accounts.push_back( {"2304130178", "MUHAMMAD ZUNIAR HILMI", true} );
-    accounts.push_back( {"2304130140", "MUHAMMAD NUR FURQON", true} );
-    accounts.push_back( {"2304130168", "I GEDE ARDHY NIRATHA", true} );
-    accounts.push_back( {"2304130160", "DAFFA PRAMATA ARYAPUTRA", true} );
+    accounts.push_back( {"2304130140", "ISI", true} );
+    accounts.push_back( {"2304130168", "ISI", true} );
   }
   void setDefaultBorrow() {
     int current_time = time(0);
