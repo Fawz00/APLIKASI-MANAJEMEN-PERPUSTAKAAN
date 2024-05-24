@@ -4,7 +4,7 @@ using namespace std;
 void aaa(int a){
   if(a<=50){
     cout << a << " ";
-    aaa(a++);
+    aaa(a+1);
   }
 }
 

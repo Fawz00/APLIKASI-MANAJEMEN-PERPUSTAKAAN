@@ -46,7 +46,7 @@ int main(){
 
         cout << "Deskripsi: ";
         getline(cin, b);
-        //cout << endline;
+        cout << endl;
 
         transaksi cache;
         cache.nominal = a;

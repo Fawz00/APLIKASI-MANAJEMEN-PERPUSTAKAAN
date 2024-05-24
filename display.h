@@ -63,6 +63,12 @@
     cin.ignore();
   }
 
+  void showTitle(string t) {
+    cout << addSpaceTab("", "=", 100) << endl;
+    cout << addSpaceTab(" "+t+" ", " ", 100) << endl;
+    cout << addSpaceTab("", "=", 100) << endl << endl;
+  }
+
   profile getAccountFromId(string id) {
     for(int i=0; i<accounts.size(); i++) {
       if( accounts[i].id == id ) {
@@ -194,9 +200,10 @@
     profile currentProfile;
     bool accountAvailable = false;
 
-    cout << addSpaceTab("", "=", 100) << endl;
-    cout << addSpaceTab(" PERPUSTAKAAN ", " ", 100) << endl;
-    cout << addSpaceTab("", "=", 100) << endl << endl;
+    // cout << addSpaceTab("", "=", 100) << endl;
+    // cout << addSpaceTab(" PERPUSTAKAAN ", " ", 100) << endl;
+    // cout << addSpaceTab("", "=", 100) << endl << endl;
+    showTitle("PERPUSTAKAAN");
 
     cout << "Log in untuk melanjutkan" << endl;
     string selection[] = {
@@ -256,7 +263,7 @@
     clearScreen();
     cout << addSpaceTab("", "=", 100) << endl;
     cout << addSpaceTab(" Halo, " + account.name + "! ", " ", 100) << endl;
-    cout << addSpaceTab("", "=", 100) << endl;
+    cout << addSpaceTab("z", "=", 100) << endl;
     cout << endl;
     if(account.superUser) {
       cout << "Masuk sebagai" << endl;
@@ -318,6 +325,7 @@
     string selection[] = {
       "Lihat daftar koleksi buku",
       "Tambahkan buku koleksi",
+      "Edit buku koleksi",
       "Hapus buku pada koleksi",
       "Lihat daftar peminjam",
       "Keluar"
@@ -370,7 +378,37 @@
         break;
       } 
 
-      case 3: {
+      case 3 : { 
+        //edit buku 
+        clearScreen();
+        cout << addSpaceTab("", "=", 100) << endl;
+        cout << addSpaceTab(" Edit buku koleksi ", " ", 100) << endl;
+        cout << addSpaceTab("", "=", 100) << endl;
+
+        string newTitle;
+        cout << "Judul: ";
+        getline(cin, newTitle);
+
+        string newAuthor;
+        cout << "Pengarang: ";
+        getline(cin, newAuthor);
+
+        string newPublisher;
+        cout << "Penerbit: ";
+        getline(cin, newPublisher);
+
+        int newYear = 1997;
+        cout << "Tahun terbit: ";
+        cin >> newYear;
+        cin.get();
+        CHECK_INPUT
+
+        bookData.push_back( {currentBookId++, newTitle, newAuthor, newPublisher, newYear} );
+        adminScreen(accId);
+        break;
+      }
+
+      case 4: {
         // Remove book from collection
         showAllBooks();
 
@@ -418,7 +456,7 @@
         break;
       }
 
-      case 4: {
+      case 5: {
         // Lihat daftar peminjam
         clearScreen();
         cout << addSpaceTab("", "=", 100) << endl;
@@ -464,7 +502,7 @@
         break;
       }
 
-      case 5: {
+      case 6: {
         // Exit
         redirectScreen(accId);
         break;
