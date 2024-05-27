@@ -102,7 +102,37 @@ template <typename T> struct LinkedList{ // double linked list
     }
   }
 
-  void insertBefore(int flag, int newData) {
+  bool contain(T flag) {
+    Node<T>* current = head;
+
+    if(flag == head->data) {
+      return true;
+    }
+
+    while(current != NULL) {
+      if(current->data == flag) {
+        return true;
+      } else {
+        current = current->next;
+      }
+    }
+    return false;
+  }
+
+  T get(int i) {
+    Node<T>* current = head;
+
+    for(int c=0; c<length && current != NULL; c++) {
+      if(c == i) {
+        return current;
+      } else {
+        current = current->next;
+      }
+    }
+    return false;
+  }
+
+  void insertBefore(T flag, T newData) {
     Node<T>* current = head;
     Node<T>* prevCurrent = head;
     Node<T>* tmp = new Node<T>();

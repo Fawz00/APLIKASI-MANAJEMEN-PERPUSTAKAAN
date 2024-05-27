@@ -71,8 +71,8 @@
 
   profile getAccountFromId(string id) {
     for(int i=0; i<accounts.size(); i++) {
-      if( accounts[i].id == id ) {
-        return accounts[i];
+      if( accounts.get(i).id == id ) {
+        return accounts.get(i);
         break;
       }
     }
