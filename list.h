@@ -1,21 +1,19 @@
-#include <iostream>
-#include <chrono>
-#include <cstdint>
-using namespace std;
+#ifndef LIST
+#define LIST
 
-struct Node{
-    int data;
-    Node* next = nullptr;
-    Node* prev = nullptr;
+template <typename T> struct Node{
+    T data;
+    Node<T>* next = nullptr;
+    Node<T>* prev = nullptr;
 };
 
-struct DoubleLinkedList{
+template <typename T> struct LinkedList{ // double linked list
   int length = 0;
-  Node* head = nullptr;
-  Node* tail = nullptr;
+  Node<T>* head = nullptr;
+  Node<T>* tail = nullptr;
 
-  void pushBack(int n){
-    Node* temp = new Node();
+  void push_back(T n){
+    Node<T>* temp = new Node<T>();
     temp -> data = n;
     if(head == nullptr){
       head = temp;
@@ -26,10 +24,11 @@ struct DoubleLinkedList{
       tail = temp;
       temp -> next = nullptr;
     }
+    length++;
   }
 
-  void pushFront(int n){
-    Node* temp = new Node();
+  void push_front(T n){
+    Node<T>* temp = new Node<T>();
     temp -> data = n;
     if(head == nullptr){
       head = temp;
@@ -40,10 +39,11 @@ struct DoubleLinkedList{
       head = temp;
       temp -> prev = nullptr;
     }
+    length++;
   }
 
   void printForward(){
-    Node* current = head;
+    Node<T>* current = head;
     while(current != nullptr){
       cout << current->data << ", ";
       current = current->next;
@@ -52,7 +52,7 @@ struct DoubleLinkedList{
   }
 
   void printBackward(){
-    Node* current = tail;
+    Node<T>* current = tail;
     while(current != nullptr){
       cout << current->data << ", ";
       current = current->prev;
@@ -62,24 +62,26 @@ struct DoubleLinkedList{
 
   void removeFirst() {
     if(head != NULL) {
-      Node* current = head;
+      Node<T>* current = head;
       head = current->next;
       delete current;
+      length--;
     }
   }
 
   void removeLast() {
     if(tail != NULL) {
-      Node* current = tail;
+      Node<T>* current = tail;
       tail = tail->prev;
       tail->next = NULL;
       delete current;
+      length--;
     }
   }
 
-  void remove(int flag) {
-    Node* current = head;
-    Node* prevCurrent = head;
+  void remove(T flag) {
+    Node<T>* current = head;
+    Node<T>* prevCurrent = head;
     bool found = false;
 
     if(flag == head->data) {
@@ -101,15 +103,15 @@ struct DoubleLinkedList{
   }
 
   void insertBefore(int flag, int newData) {
-    Node* current = head;
-    Node* prevCurrent = head;
-    Node* tmp = new Node();
+    Node<T>* current = head;
+    Node<T>* prevCurrent = head;
+    Node<T>* tmp = new Node<T>();
     tmp->data = newData;
     bool found = false;
 
     if(flag == head->data) {
       found = true;
-      pushBack(newData);
+      push_back(newData);
     }
 
     while(current != NULL && !found) {
@@ -119,6 +121,7 @@ struct DoubleLinkedList{
         prevCurrent->next = tmp;
         current->prev = tmp;
         found = true;
+        length++;
       } else {
         prevCurrent = current;
         current = current->next;
@@ -127,13 +130,13 @@ struct DoubleLinkedList{
   }
 
   void sort(bool inv) {
-    pushFront(0);
+    push_front(0);
     bool swaped = false;
 
     while(!swaped) {
-      Node* curr = head->next->next;
-      Node* prev = head->next;
-      Node* prevprev = head;
+      Node<T>* curr = head->next->next;
+      Node<T>* prev = head->next;
+      Node<T>* prevprev = head;
       swaped = true;
       while(curr != NULL) {
         bool check = prev->data > curr->data;
@@ -152,25 +155,9 @@ struct DoubleLinkedList{
     removeFirst();
   }
 
-  int timeSinceEpochMillisec() {
-    using namespace std::chrono;
-    return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
-  }
-
-  void fillRandom(int len) {
-    for(int i=0; i<len; i++) {
-      srand(timeSinceEpochMillisec()*i);
-      pushBack(rand()%100);
-    }
+  int size() {
+    return length;
   }
 };
 
-int main(){
-    DoubleLinkedList ls;
-    //ls.fillRandom(10);
-    ls.pushBack(4);
-    ls.pushBack(2);
-    ls.pushBack(16);
-    ls.insertBefore(16, 90);
-    ls.printForward();
-}
+#endif // LIST

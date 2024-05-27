@@ -10,7 +10,7 @@
     int year;
   };
   long currentBookId = time(0)/100000;
-  vector<book> bookData;
+  LinkedList<book> bookData;
 
   // BORROWED BOOK
   struct borrowedBook {
@@ -19,7 +19,7 @@
     long borrowStartDate;
     long borrowDuration;
   };
-  vector<borrowedBook> borrowedBooks;
+  LinkedList<borrowedBook> borrowedBooks;
 
   // PROFILE
   struct profile {
@@ -27,7 +27,7 @@
     string name;
     bool superUser;
   };
-  vector<profile> accounts;
+  LinkedList<profile> accounts;
 
   
 

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <cstdint>
+#include <string>
 using namespace std;
 
 int timeSinceEpochMillisec() {
@@ -48,7 +49,7 @@ struct SingleLinkedList {
     length++;
   }
 
-  void print() {
+  void printForward() {
     Node* curr = head;
     while(curr != NULL) {
       cout << curr->data << ", ";
@@ -213,14 +214,18 @@ struct SingleLinkedList {
 
 int main() {
   SingleLinkedList ls;
-  ls.fillRandom(10000);
+  // ls.fillRandom(10000);
 
-  //ls.print();
-  int startTime = timeSinceEpochMillisec();
-  ls.sort(false);
-  cout << "Time: " << timeSinceEpochMillisec()-startTime << " ms." << endl;
-  //ls.print();
-  cout << ls.length << endl;
+  // int startTime = timeSinceEpochMillisec();
+  // ls.sort(false);
+  // cout << "Time: " << timeSinceEpochMillisec()-startTime << " ms." << endl;
+  // cout << ls.length << endl;
+
+  ls.pushBack(4);
+  ls.pushBack(2);
+  ls.pushBack(16);
+  ls.insertBefore(16, 90);
+  ls.printForward();
 
   return 0;
 }

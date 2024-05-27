@@ -46,5 +46,6 @@
     "typeinfo": "cpp",
     "xstring": "cpp",
     "chrono": "cpp"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }
