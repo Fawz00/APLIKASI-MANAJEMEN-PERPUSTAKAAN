@@ -449,8 +449,34 @@
         cin.get();
         CHECK_INPUT
 
-        bookData.removeAt(id_);
-        bookData.push_back( {id_, newTitle, newAuthor, newPublisher, newYear} );
+        bool finished = false;
+        bool isBorrowed = false;
+        for(int i=0; i<borrowedBooks.size(); i++) {
+          if(borrowedBooks.get(i).bookId == id_) {
+            isBorrowed = true;
+            break;
+          }
+        }
+        if(!isBorrowed) {
+          for(int i=0; i<bookData.size(); i++) {
+            if( bookData.get(i).id == id_ ) {
+              bookData.removeAt( i );
+              finished = true;
+              break;
+            }
+          }
+          bookData.push_back( {id_, newTitle, newAuthor, newPublisher, newYear} );
+          showAllBooks();
+          cout << endl;
+          if(!finished) {
+            cout << "Error, kode buku tidak ditemukan.";
+            pause();
+          } else {
+            cout << "Buku berhasil diubah.";
+            pause();
+          }
+        }
+
         adminScreen(accId);
         break;
       }
