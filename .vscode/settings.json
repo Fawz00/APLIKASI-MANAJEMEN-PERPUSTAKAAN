@@ -45,7 +45,10 @@
     "streambuf": "cpp",
     "typeinfo": "cpp",
     "xstring": "cpp",
-    "chrono": "cpp"
+    "chrono": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "xutility": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

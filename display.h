@@ -55,6 +55,7 @@
       cout << addSpaceTab(to_string(i)+". ", " ", 4) << list[i-1] << endl;
     }
   }
+  
 
   void pause() {
     cout << endl << "Masukkan 1 untuk melanjutkan." << endl;
@@ -102,10 +103,10 @@
     cout << addSpaceTab("Kode", " ", 6) << addSpaceTab("Judul", " ", 38) << addSpaceTab("Pengarang", " ", 20) << addSpaceTab("Penerbit", " ", 20) << addSpaceTab("Tahun", " ", 6) << addSpaceTab("Ket.", " ", 10) << endl;
     cout << addSpaceTab("", "-", 100) << endl;
     for(int i=0; i<bookData.size(); i++) {
-      book currentBook = bookData[i];
+      book currentBook = bookData.get(i);
       bool isBorrowed = false;
       for(int j=0; j<borrowedBooks.size(); j++) {
-        if( borrowedBooks[j].bookId == bookData[i].id ) {
+        if( borrowedBooks.get(j).bookId == bookData.get(i).id ) {
           isBorrowed = true;
           break;
         }
@@ -113,6 +114,38 @@
       cout << addSpaceTab(to_string(currentBook.id).substr(0,5), " ", 6) << addSpaceTab(fixedText(currentBook.title,37), " ", 38) << addSpaceTab(fixedText(currentBook.author,19), " ", 20) << addSpaceTab(fixedText(currentBook.publisher,19), " ", 20) << addSpaceTab(to_string(currentBook.year), " ", 6) << addSpaceTab( isBorrowed?"Dipinjam":"" , " ", 10) << endl;
     }
   }
+
+  void showAllBooksSorted(string type, bool inv) {
+    if(type == "tahun") {
+      int tmp[bookData.size()];
+      for(int i=0; i<bookData.size(); i++) {
+        tmp[i] = bookData.get(i).year;
+      }
+    }else if(type == "judul") {
+
+    }
+
+    clearScreen();
+
+    cout << addSpaceTab("", "=", 100) << endl;
+    cout << addSpaceTab(" Daftar koleksi buku ", " ", 100) << endl;
+    cout << addSpaceTab("", "=", 100) << endl << endl;
+
+    cout << addSpaceTab("Kode", " ", 6) << addSpaceTab("Judul", " ", 38) << addSpaceTab("Pengarang", " ", 20) << addSpaceTab("Penerbit", " ", 20) << addSpaceTab("Tahun", " ", 6) << addSpaceTab("Ket.", " ", 10) << endl;
+    cout << addSpaceTab("", "-", 100) << endl;
+    for(int i=0; i<bookData.size(); i++) {
+      book currentBook = bookData.get(i);
+      bool isBorrowed = false;
+      for(int j=0; j<borrowedBooks.size(); j++) {
+        if( borrowedBooks.get(j).bookId == bookData.get(i).id ) {
+          isBorrowed = true;
+          break;
+        }
+      }
+      cout << addSpaceTab(to_string(currentBook.id).substr(0,5), " ", 6) << addSpaceTab(fixedText(currentBook.title,37), " ", 38) << addSpaceTab(fixedText(currentBook.author,19), " ", 20) << addSpaceTab(fixedText(currentBook.publisher,19), " ", 20) << addSpaceTab(to_string(currentBook.year), " ", 6) << addSpaceTab( isBorrowed?"Dipinjam":"" , " ", 10) << endl;
+    }
+  }
+
   void showAllBorrowedBooks(string userId) {
     clearScreen();
 
@@ -124,22 +157,22 @@
     cout << addSpaceTab("", "-", 100) << endl;
 
     for(int i=0; i<borrowedBooks.size(); i++) {
-      if(borrowedBooks[i].profileId == userId) {
+      if(borrowedBooks.get(i).profileId == userId) {
         string bookTitle;
-        long bookId = borrowedBooks[i].bookId;
+        long bookId = borrowedBooks.get(i).bookId;
         float dur;
         float pay = 0.0F;
 
         for (int j = 0; j<bookData.size(); j++) {
-          if( bookData[j].id == borrowedBooks[i].bookId ) {
-            bookTitle = bookData[j].title;
+          if( bookData.get(j).id == borrowedBooks.get(i).bookId ) {
+            bookTitle = bookData.get(i).title;
             break;
           }
         }
 
         // calc duration
         int current_time = time(0);
-        dur = (float)((borrowedBooks[i].borrowStartDate+borrowedBooks[i].borrowDuration)-current_time)/86400.0F;
+        dur = (float)((borrowedBooks.get(i).borrowStartDate+borrowedBooks.get(i).borrowDuration)-current_time)/86400.0F;
         if(dur < 0) {
           pay = -dur * DENDA_TERLAMBAT;
         }
@@ -226,7 +259,7 @@
         getline(cin, currentProfile.id);
 
         for(int i=0; i<accounts.size(); i++) {
-          if( accounts[i].id == currentProfile.id ) {
+          if( accounts.get(i).id == currentProfile.id ) {
             accountAvailable = true;
             break;
           }
@@ -422,7 +455,7 @@
         bool isBorrowed = false;
 
         for(int i=0; i<borrowedBooks.size(); i++) {
-          if(borrowedBooks[i].bookId == bookId) {
+          if(borrowedBooks.get(i).bookId == bookId) {
             isBorrowed = true;
             break;
           }
@@ -430,8 +463,8 @@
 
         if(!isBorrowed) {
           for(int i=0; i<bookData.size(); i++) {
-            if( bookData[i].id == bookId ) {
-              bookData.erase( bookData.begin() + i );
+            if( bookData.get(i).id == bookId ) {
+              bookData.removeAt(i);
               finished = true;
               break;
             }
@@ -468,36 +501,34 @@
 
         for (int i=0; i<borrowedBooks.size(); i++) {
           string bookTitle;
-          long bookId = borrowedBooks[i].bookId;
+          long bookId = borrowedBooks.get(i).bookId;
           string name;
           float dur; // in day
 
           //find profile name by id
           for (int j = 0; j<accounts.size(); j++) {
-            if( accounts[j].id == borrowedBooks[i].profileId ) {
-              name = accounts[j].name;
+            if( accounts.get(j).id == borrowedBooks.get(i).profileId ) {
+              name = accounts.get(j).name;
               break;
             }
           }
 
           //find book title by id
           for (int j = 0; j<bookData.size(); j++) {
-            if( bookData[j].id == bookId ) {
-              bookTitle = bookData[j].title;
+            if( bookData.get(j).id == bookId ) {
+              bookTitle = bookData.get(j).title;
               break;
             }
           }
 
           // calc duration
           int current_time = time(0);
-          dur = (float)((borrowedBooks[i].borrowStartDate+borrowedBooks[i].borrowDuration)-current_time)/86400.0F;
+          dur = (float)((borrowedBooks.get(i).borrowStartDate+borrowedBooks.get(i).borrowDuration)-current_time)/86400.0F;
 
           // Show to screen
-          cout << addSpaceTab(borrowedBooks[i].profileId.substr(0,11), " ", 12) << addSpaceTab(fixedText(name,31), " ", 32) << addSpaceTab(fixedText(to_string(bookId),10), " ", 11) << addSpaceTab(fixedText(bookTitle,34), " ", 35) << addSpaceTab(fixedText(decStr(dur,1)+" hari",9), " ", 10) << endl;
+          cout << addSpaceTab(borrowedBooks.get(i).profileId.substr(0,11), " ", 12) << addSpaceTab(fixedText(name,31), " ", 32) << addSpaceTab(fixedText(to_string(bookId),10), " ", 11) << addSpaceTab(fixedText(bookTitle,34), " ", 35) << addSpaceTab(fixedText(decStr(dur,1)+" hari",9), " ", 10) << endl;
 
-        }
-        
-        pause();
+        } 
         adminScreen(accId);
         break;
       }
@@ -575,8 +606,8 @@
         int finished = -1;
         if(finished==-1) for(int i=0; i<bookData.size(); i++) {
           if(finished==-1) for(int j=0; j<borrowedBooks.size(); j++) {
-            if(borrowedBooks[j].bookId != bookId) {
-              if( bookData[i].id == bookId ) {
+            if(borrowedBooks.get(j).bookId != bookId) {
+              if( bookData.get(i).id == bookId ) {
                 long current_time = time(0);
                 borrowedBooks.push_back( {bookId, profileId, current_time, 1209600L} );
                 finished = 1;
@@ -619,14 +650,14 @@
         float pay = 0.0F;
         bool finished = false;
         for(int i=0; i<borrowedBooks.size(); i++) {
-          if(borrowedBooks[i].profileId == profileId) {
-            if(borrowedBooks[i].bookId == bookId) {
+          if(borrowedBooks.get(i).profileId == profileId) {
+            if(borrowedBooks.get(i).bookId == bookId) {
               long current_time = time(0);
-              float dur = (float)((borrowedBooks[i].borrowStartDate+borrowedBooks[i].borrowDuration)-current_time)/86400.0F;
+              float dur = (float)((borrowedBooks.get(i).borrowStartDate+borrowedBooks.get(i).borrowDuration)-current_time)/86400.0F;
               if(dur < 0) {
                 pay = -dur * DENDA_TERLAMBAT;
               }
-              borrowedBooks.erase( borrowedBooks.begin() + i );
+              borrowedBooks.removeAt( i );
               finished = true;
               break;
             }
@@ -663,7 +694,7 @@
 
         bool finished = false;
         for(int i=0; i<borrowedBooks.size(); i++) {
-          if( borrowedBooks[i].profileId == profileId && borrowedBooks[i].bookId == bookId) {
+          if( borrowedBooks.get(i).profileId == profileId && borrowedBooks.get(i).bookId == bookId) {
             finished = true;
 
             cout << endl << "1. Hilang" << endl;
@@ -681,16 +712,16 @@
 
             // calc duration
             int current_time = time(0);
-            float dur = (float)((borrowedBooks[i].borrowStartDate+borrowedBooks[i].borrowDuration)-current_time)/86400.0F;
+            float dur = (float)((borrowedBooks.get(i).borrowStartDate+borrowedBooks.get(i).borrowDuration)-current_time)/86400.0F;
             if(dur < 0) {
               pay += -dur * DENDA_TERLAMBAT;
             }
 
             if(finished) {
-              borrowedBooks.erase( borrowedBooks.begin() + i );
+              borrowedBooks.removeAt( i );
               for(int j=0; j<bookData.size(); j++) {
-                if( bookData[j].id == bookId ) {
-                  bookData.erase( bookData.begin() + j );
+                if( bookData.get(j).id == bookId ) {
+                  bookData.removeAt( j );
                   break;
                 }
               }

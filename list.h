@@ -1,6 +1,11 @@
 #ifndef LIST
 #define LIST
 
+struct Map{
+  int key;
+  int value;
+};
+
 template <typename T> struct Node{
     T data;
     Node<T>* next = nullptr;
@@ -102,6 +107,29 @@ template <typename T> struct LinkedList{ // double linked list
     }
   }
 
+  void removeAt(int i) {
+    Node<T>* current = head;
+
+    if(i == 0) {
+      removeFirst();
+      return;
+    }
+    if(i == length-1) {
+      removeLast();
+      return;
+    }
+
+    for(int c=0; c<length && current != NULL; c++) {
+      if(c == i) {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+        delete current;
+      } else {
+        current = current->next;
+      }
+    }
+  }
+
   bool contain(T flag) {
     Node<T>* current = head;
 
@@ -124,12 +152,12 @@ template <typename T> struct LinkedList{ // double linked list
 
     for(int c=0; c<length && current != NULL; c++) {
       if(c == i) {
-        return current;
+        return current->data;
       } else {
         current = current->next;
       }
     }
-    return false;
+    return current->data;
   }
 
   void insertBefore(T flag, T newData) {
@@ -159,35 +187,29 @@ template <typename T> struct LinkedList{ // double linked list
     }
   }
 
-  void sort(bool inv) {
-    push_front(0);
-    bool swaped = false;
-
-    while(!swaped) {
-      Node<T>* curr = head->next->next;
-      Node<T>* prev = head->next;
-      Node<T>* prevprev = head;
-      swaped = true;
-      while(curr != NULL) {
-        bool check = prev->data > curr->data;
-        if(inv) check = prev->data < curr->data;
-        if(check) {
-          swaped = false;
-          prev->next = curr->next;
-          curr->next = prev;
-          prevprev->next = curr;
-        }
-        prevprev = prev;
-        prev = curr;
-        curr = curr->next;
-      }
-    }
-    removeFirst();
-  }
-
   int size() {
     return length;
   }
 };
+
+void shellSort(int n, int data[], bool inv) {
+  int dst=n;
+  while(dst>1) {
+    dst=dst/2;
+    bool don=true;
+    while(don){
+      don=false;
+      for(int j=0; j<n-dst; j++){
+        int i=j+dst;
+        if(data[j]>data[i]){
+          int temp = data[i];
+          data[i] = data[j];
+          data[j] = temp;
+          don=true;
+        }
+      }
+    }
+  }
+}
 
 #endif // LIST

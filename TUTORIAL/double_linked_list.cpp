@@ -167,10 +167,7 @@ struct DoubleLinkedList{
 
 int main(){
     DoubleLinkedList ls;
-    //ls.fillRandom(10);
-    ls.pushBack(4);
-    ls.pushBack(2);
-    ls.pushBack(16);
-    ls.insertBefore(16, 90);
+    ls.fillRandom(10);
+    ls.sort(false);
     ls.printForward();
 }
