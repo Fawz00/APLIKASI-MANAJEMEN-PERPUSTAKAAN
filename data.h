@@ -2,13 +2,6 @@
 #define DATA_H
 
   // BOOK
-  struct book {
-    long id;
-    string title;
-    string author;
-    string publisher;
-    int year;
-  };
   long currentBookId = time(0)/100000;
   LinkedList<book> bookData;
 
@@ -49,13 +42,13 @@
     // ADD ACCOUNT        USER ID       NAME                        ADMIN
     accounts.push_back( {"2304130169", "FAWWAZ HARYOLUKITO PAMBUDI", true} );
     accounts.push_back( {"2304130178", "MUHAMMAD ZUNIAR HILMI", true} );
-    accounts.push_back( {"2304130140", "ISI", true} );
-    accounts.push_back( {"2304130168", "ISI", true} );
+    accounts.push_back( {"2304130159", "TAUFIQUR RAMADHAN", true} );
+    accounts.push_back( {"2304130160", "DAFFA PRAMATA ARYAPUTRA", true} );
   }
   void setDefaultBorrow() {
     int current_time = time(0);
-    borrowedBooks.push_back( {17642, "2304130168", current_time-86400, 345600} );
-    borrowedBooks.push_back( {17644, "2304130140", current_time-345600, 86400} );
+    borrowedBooks.push_back( {17642, "2304130159", current_time-86400, 345600} );
+    borrowedBooks.push_back( {17644, "2304130160", current_time-345600, 86400} );
   }
 
 #endif //DATA_H

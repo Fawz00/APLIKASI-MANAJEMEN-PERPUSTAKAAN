@@ -13,19 +13,10 @@ void init() {
   setDefaultBorrow();
 }
 
-// Abaikan yang di bawah ^_^
-void prt(int a) { cout << a << endl; }
-int add(int x, int y) { return x + y; }
-void invoke(int x, int y, int (*f)(int,int), void (*func)(int)) {
-    func(f(x,y));
-}
-// Abaikan yang di atas ^_^
-
 
 
 int main(){
 
-  //invoke(1,2, &add, &prt);
   while (true) {
     init();
     loginScreen();

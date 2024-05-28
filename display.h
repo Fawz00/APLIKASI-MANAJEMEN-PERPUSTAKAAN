@@ -116,14 +116,18 @@
   }
 
   void showAllBooksSorted(string type, bool inv) {
-    if(type == "tahun") {
-      int tmp[bookData.size()];
-      for(int i=0; i<bookData.size(); i++) {
-        tmp[i] = bookData.get(i).year;
-      }
-    }else if(type == "judul") {
+    Map tmp[bookData.size()];
 
+    if(type == "tahun") {
+      for(int i=0; i<bookData.size(); i++) {
+        tmp[i] = {i, bookData.get(i).year};
+      }
+    }else if(type == "id") {
+      for(int i=0; i<bookData.size(); i++) {
+        tmp[i] = {i, bookData.get(i).id};
+      }
     }
+    sort(bookData.size(), tmp, false);
 
     clearScreen();
 
@@ -134,10 +138,10 @@
     cout << addSpaceTab("Kode", " ", 6) << addSpaceTab("Judul", " ", 38) << addSpaceTab("Pengarang", " ", 20) << addSpaceTab("Penerbit", " ", 20) << addSpaceTab("Tahun", " ", 6) << addSpaceTab("Ket.", " ", 10) << endl;
     cout << addSpaceTab("", "-", 100) << endl;
     for(int i=0; i<bookData.size(); i++) {
-      book currentBook = bookData.get(i);
+      book currentBook = bookData.get(tmp[i].key);
       bool isBorrowed = false;
       for(int j=0; j<borrowedBooks.size(); j++) {
-        if( borrowedBooks.get(j).bookId == bookData.get(i).id ) {
+        if( borrowedBooks.get(j).bookId == bookData.get(tmp[i].key).id ) {
           isBorrowed = true;
           break;
         }
@@ -375,7 +379,7 @@
     switch (answer) {
       case 1: {
         // Show all book
-        showAllBooks();
+        showAllBooksSorted("tahun", false);
         pause();
         adminScreen(accId);
         break;
@@ -418,6 +422,15 @@
         cout << addSpaceTab(" Edit buku koleksi ", " ", 100) << endl;
         cout << addSpaceTab("", "=", 100) << endl;
 
+        showAllBooksSorted("tahun", false);
+        cout << "\n";
+
+        long id_;
+        cout << "Masukkan id buku: ";
+        cin >> id_;
+        cin.get();
+        CHECK_INPUT
+
         string newTitle;
         cout << "Judul: ";
         getline(cin, newTitle);
@@ -436,7 +449,8 @@
         cin.get();
         CHECK_INPUT
 
-        bookData.push_back( {currentBookId++, newTitle, newAuthor, newPublisher, newYear} );
+        bookData.removeAt(id_);
+        bookData.push_back( {id_, newTitle, newAuthor, newPublisher, newYear} );
         adminScreen(accId);
         break;
       }
@@ -450,21 +464,18 @@
         cin >> bookId;
         cin.get();
         CHECK_INPUT
-
         bool finished = false;
         bool isBorrowed = false;
-
         for(int i=0; i<borrowedBooks.size(); i++) {
           if(borrowedBooks.get(i).bookId == bookId) {
             isBorrowed = true;
             break;
           }
         }
-
         if(!isBorrowed) {
           for(int i=0; i<bookData.size(); i++) {
             if( bookData.get(i).id == bookId ) {
-              bookData.removeAt(i);
+              bookData.removeAt( i );
               finished = true;
               break;
             }
@@ -484,7 +495,6 @@
           cout << "Tidak dapat menghapus buku, buku sedang dipinjam.";
           pause();
         }
-
         adminScreen(accId);
         break;
       }

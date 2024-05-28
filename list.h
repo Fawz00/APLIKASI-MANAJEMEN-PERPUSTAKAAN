@@ -6,6 +6,14 @@ struct Map{
   int value;
 };
 
+struct book {
+  long id;
+  string title;
+  string author;
+  string publisher;
+  int year;
+};
+
 template <typename T> struct Node{
     T data;
     Node<T>* next = nullptr;
@@ -112,11 +120,9 @@ template <typename T> struct LinkedList{ // double linked list
 
     if(i == 0) {
       removeFirst();
-      return;
     }
     if(i == length-1) {
       removeLast();
-      return;
     }
 
     for(int c=0; c<length && current != NULL; c++) {
@@ -124,6 +130,7 @@ template <typename T> struct LinkedList{ // double linked list
         current->prev->next = current->next;
         current->next->prev = current->prev;
         delete current;
+        length--;
       } else {
         current = current->next;
       }
@@ -192,7 +199,7 @@ template <typename T> struct LinkedList{ // double linked list
   }
 };
 
-void shellSort(int n, int data[], bool inv) {
+void sort(int n, Map data[], bool inv) { // shell sort
   int dst=n;
   while(dst>1) {
     dst=dst/2;
@@ -201,8 +208,10 @@ void shellSort(int n, int data[], bool inv) {
       don=false;
       for(int j=0; j<n-dst; j++){
         int i=j+dst;
-        if(data[j]>data[i]){
-          int temp = data[i];
+        bool b = data[j].value > data[i].value;
+        if(inv) b = data[j].value < data[i].value;
+        if(b){
+          Map temp = data[i];
           data[i] = data[j];
           data[j] = temp;
           don=true;
