@@ -221,4 +221,19 @@ void sort(int n, Map data[], bool inv) { // shell sort
   }
 }
 
+int binarySearch(int n, Map data[], int s) {
+  int l = 0;
+  int r = n-1;
+  while(l <= r) {
+    int m = (l+r)/2;
+    int d = data[m].value;
+    if(d == s) {
+        return m;
+    }
+    if(s < d) r = m-1;
+    if(s > d) l = m+1;
+  }
+  return -1;
+}
+
 #endif // LIST
